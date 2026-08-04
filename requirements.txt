@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pydantic
+PyJWT>=2.8.0
+openai>=1.0
+pdfplumber
+pytest

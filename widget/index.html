@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo widget — AI Customer Support</title>
+  <link rel="icon" href="data:,">
+  <style>
+    body { margin: 0; font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #0f1117; color: #e2e8f0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .demo { text-align: center; }
+    h1 { font-size: 24px; }
+    p { color: #94a3b8; }
+    .hint { color: #94a3b8; font-size: 12px; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="demo">
+    <h1>Trang demo — Widget AI Customer Support</h1>
+    <p>Bấm nút tròn góc dưới phải để chat với agent.</p>
+    <p>Thử: "Chính sách bảo hành?", "Giao hàng mất bao lâu?", "Gặp nhân viên thật"</p>
+    <div class="hint">Nhúng vào website của bạn: &lt;script src="/widget/widget.js" data-api="http://localhost:8005"&gt;&lt;/script&gt;</div>
+  </div>
+  <script src="/widget/widget.js" data-api="http://localhost:8005"></script>
+</body>
+</html>
