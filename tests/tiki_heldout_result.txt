@@ -1,0 +1,38 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+========================================================================
+CS HYBRID α TUNING — held-out split (15 tune / 7 eval)
+Split: seed=42, held-out = 7/22 câu tự nhiên (không tham gia sweep)
+held-out ids: [2, 5, 9, 12, 15, 16, 21]
+tune: 15 câu | held-out: 7 câu
+
+Sweep α trên tune set (metric: MRR):
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6266.83it/s]
+  α=0.0: hit@1 33.3%  hit@3 46.7%  hit@5 60.0%  MRR 0.460
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4265.79it/s]
+  α=0.1: hit@1 33.3%  hit@3 53.3%  hit@5 66.7%  MRR 0.481
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4678.15it/s]
+  α=0.2: hit@1 46.7%  hit@3 60.0%  hit@5 66.7%  MRR 0.555
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4093.13it/s]
+  α=0.3: hit@1 46.7%  hit@3 60.0%  hit@5 66.7%  MRR 0.557
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4726.36it/s]
+  α=0.4: hit@1 46.7%  hit@3 60.0%  hit@5 66.7%  MRR 0.562
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 3805.48it/s]
+  α=0.5: hit@1 46.7%  hit@3 60.0%  hit@5 66.7%  MRR 0.563
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4528.16it/s]
+  α=0.6: hit@1 53.3%  hit@3 53.3%  hit@5 66.7%  MRR 0.594
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4297.84it/s]
+  α=0.8: hit@1 53.3%  hit@3 60.0%  hit@5 80.0%  MRR 0.624
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5083.48it/s]
+  α=1.0: hit@1 46.7%  hit@3 66.7%  hit@5 73.3%  MRR 0.600
+
+Best α trên tune: 0.8 (MRR 0.624)
+
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4421.79it/s]
+Eval trên 7 câu HELD-OUT (α=0.8 — best trên tune):
+  hit@1 42.9%  hit@3 42.9%  hit@5 71.4%  MRR 0.527
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4737.82it/s]
+Eval trên 7 câu HELD-OUT (α=0.2 — giá trị đang deploy):
+  hit@1 42.9%  hit@3 71.4%  hit@5 85.7%  MRR 0.588
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5039.10it/s]
+Eval trên TOÀN BỘ 22 câu (cùng α=0.8): hit@1 50.0%  hit@3 54.5%  hit@5 77.3%  MRR 0.593
+EXIT=0

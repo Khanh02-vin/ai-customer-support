@@ -4,7 +4,8 @@ Scoring: TF-IDF cosine (IDF tính từ corpus) — khắc phục từ thường 
 lấn át từ khóa hiếm khi chỉ dùng độ phủ token.
 semantic=True (tùy chọn): hybrid TF-IDF + multilingual-e5-small — fallback TF-IDF
 nếu chưa cài sentence-transformers. α (KB_SEMANTIC_ALPHA, mặc định 0.2) sweep trên
-22 câu hỏi tự nhiên Tiki thật (0.0→1.0): tốt nhất α=0.2, hit@3 54.5%→63.6%."""
+22 câu hỏi tự nhiên Tiki thật: hit@3 54.5%→63.6%; kiểm tra held-out (15 tune/7 eval)
+xác nhận α=0.2 generalizes tốt hơn α tune chọn (hit@3 71.4% vs 42.9%) — không overfit."""
 import math
 import os
 import re

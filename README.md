@@ -111,6 +111,8 @@ TF-IDF khắc phục từ thường (tiki, tôi, làm, tại) lấn át token hi
 | hit@5 | 68.2% | **72.7%** |
 | MRR | 0.486 | **0.548** |
 
+**Kiểm tra overfit (held-out 15/7, seed=42):** α=0.2 đang deploy đạt held-out hit@3 **71.4%**, MRR 0.588 — TỐT HƠN α=0.8 mà sweep trên 15 câu tune chọn (hit@3 42.9%, MRR 0.527) → xác nhận α=0.2 không phải do tune trên eval set, giá trị chọn ổn định ngoài mẫu (`python tests/tune_tiki_alpha.py`). Lưu ý: 7 câu held-out là mẫu nhỏ, nên dùng như kiểm tra chiều hướng, không phải con số chính.
+
 ```bash
 python tests/benchmark_tiki_natural.py   # chạy lại (22 câu hỏi tự nhiên, semantic=True)
 python tests/benchmark_tiki_semantic.py  # sweep α để kiểm tra lại tuning
