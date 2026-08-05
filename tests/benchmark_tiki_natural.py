@@ -6,8 +6,10 @@
   tự nhiên không khớp từng từ tiêu đề) — data/tiki_queries_natural.jsonl
 - GT: bài viết gốc mà câu hỏi được viết ra (theo url)
 Metric: hit@1, hit@3, hit@5, MRR.
+BENCH_LLM=1: thêm cột metric sau LLM re-rank top-5 (tests/llm_rerank.py, cache JSONL).
 """
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -67,6 +69,14 @@ def main():
     mrrs = []
     fails = []
 
+    reranker = None
+    rr_counts = {k: 0 for k in ks}
+    rr_mrrs = []
+    rr_fails = []
+    if os.getenv("BENCH_LLM"):
+        from tests.llm_rerank import Reranker
+        reranker = Reranker(Path(__file__).parent.parent / "data" / "llm_rerank_cache.jsonl")
+
     for q in queries:
         result = retrieve(q["question"], entries, k=max(ks), semantic=True)
         gt = art_chunk_ids[q["url"]]
@@ -84,6 +94,16 @@ def main():
         if not any(r.id in gt for r in result):
             fails.append(q["question"])
 
+        if reranker is not None:
+            i = reranker.pick(q["question"], [r.content for r in result])
+            rr_result = ([result[i]] + [r for j, r in enumerate(result) if j != i]) if i > 0 else result
+            for k in ks:
+                if set(r.id for r in rr_result[:k]) & gt:
+                    rr_counts[k] += 1
+            rr_mrrs.append(next((1.0 / i for i, r in enumerate(rr_result, 1) if r.id in gt), 0.0))
+            if not any(r.id in gt for r in rr_result):
+                rr_fails.append(q["question"])
+
     total = len(queries)
     print(f"{'Metric':<12}{'value':>10}")
     print("-" * 24)
@@ -94,6 +114,15 @@ def main():
     print(f"\nFails (không tìm thấy bài đúng trong top-5): {len(fails)}/{total}")
     for f in fails:
         print(f"  - {f[:90]}")
+
+    if reranker is not None:
+        print(f"\n--- Sau LLM re-rank top-5 (qwen3.7-max, cache {len(reranker.cache)} entry) ---")
+        print(f"{'Metric':<12}{'value':>10}")
+        print("-" * 24)
+        for k in ks:
+            print(f"{'hit@' + str(k):<12}{rr_counts[k] / total * 100:>9.1f}%")
+        print(f"{'MRR':<12}{sum(rr_mrrs) / total:>10.3f}")
+        print(f"Fails: {len(rr_fails)}/{total}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,33 @@
+========================================================================
+CUSTOMER SUPPORT — RAG ANSWER GENERATION (tiki FAQ thật, 22 câu hỏi tự nhiên)
+Metric: grounding tự động (số trong câu trả lời phải có trong context) — không phải đo độ đúng ngữ nghĩa
+========================================================================
+Trả lời được (không từ chối):      13/22
+Grounding: mọi số đều nằm trong context: 12/13
+Có từ khóa chính của bài GT:       7/13
+
+--- 6 mẫu (câu hỏi | bài GT | trả lời) ---
+Q: Mình đặt nhầm đồ, giờ muốn hủy đơn hàng thì làm sao ạ?
+  GT: Làm cách nào để tôi hủy đơn hàng?
+  A: Quý khách yêu cầu hủy đơn khi nhà bán liên hệ xác nhận đơn hàng, hoặc từ chối nhận hàng khi nhân viên giao đến.
+
+Q: Em quên mất mật khẩu tài khoản Tiki rồi, lấy lại kiểu gì?
+  GT: Làm thế nào để tôi lấy lại mật khẩu tài khoản Tiki?
+  A: Chọn "Tài khoản" góc trên bên phải, nhập SĐT/Email rồi bấm "Tiếp tục". Tại ô "Nhập mật khẩu", chọn dòng "Quên mật khẩu?", nhập lại thông tin tài khoản và bấm "Lấy lại mật khẩu". Trượt mảnh ghép vào ô 
+
+Q: Tài khoản của mình muốn cập nhật lại thông tin cá nhân thì vào chỗ nào?
+  GT: Làm cách nào để tôi cập nhật thông tin tài khoản?
+  A: Vào mục "Tài khoản" trên website Tiki, chọn "Thông tin tài khoản" để cập nhật.
+
+Q: Hỗ trợ khách hàng qua chat với Tiki ở đâu, thao tác như thế nào?
+  GT: Hướng dẫn thao tác chat với Tiki
+  A: Có kênh "Chat với trợ lý cá nhân" trên kênh hỗ trợ chính thống của Tiki. Context không cung cấp đường dẫn hoặc thao tác cụ thể để mở chat. Vui lòng truy cập phần liên hệ hỗ trợ trên website/app Tiki đ
+
+Q: Mua điện thoại trả góp bằng thẻ tín dụng qua ứng dụng Tiki được không?
+  GT: Hướng dẫn mua trả góp qua thẻ tín dụng tại ứng dụng Tiki.
+  A: Được. Chọn sản phẩm có mục "Trả góp" tại trang sản phẩm, điền thông tin thẻ tín dụng, chọn hình thức giao hàng rồi xác nhận đặt hàng. Lưu ý: đơn hàng trả góp chưa hỗ trợ hủy do nhu cầu.
+
+Q: Hình thức mua trước trả sau là gì, thanh toán ra sao?
+  GT: Hình thức thanh toán Mua trước - trả sau là gì
+  A: "Mua trước trả sau" là phương thức thanh toán trên Tiki, dùng làm cách trả tiền khi mua hàng. Cách dùng: chọn sản phẩm có mục "Trả góp", làm theo các bước chọn mua, nhập thông tin thẻ, xác nhận và tha
+

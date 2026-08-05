@@ -104,17 +104,23 @@ TF-IDF khắc phục từ thường (tiki, tôi, làm, tại) lấn át token hi
 
 `data/tiki_queries_natural.jsonl`: 22 câu hỏi viết tay kiểu khách hàng thật (không dùng tiêu đề), GT = bài gốc theo URL. Đóng lỗ hổng benchmark cũ "query = tiêu đề quá dễ":
 
-| Metric | TF-IDF thuần | **Hybrid + e5-small** |
-|---|---|---|
-| hit@1 | 36.4% | **45.5%** |
-| hit@3 | 54.5% | **63.6%** |
-| hit@5 | 68.2% | **72.7%** |
-| MRR | 0.486 | **0.548** |
+| Metric | TF-IDF thuần | Hybrid + e5-small | **+ LLM re-rank top-5** |
+|---|---|---|---|
+| hit@1 | 36.4% | 45.5% | **50.0%** |
+| hit@3 | 54.5% | 63.6% | **72.7%** |
+| hit@5 | 68.2% | 72.7% | 72.7% |
+| MRR | 0.486 | 0.548 | **0.591** |
+
+Lần 4 — **LLM re-rank top-5** (qwen3.7-max, `BENCH_LLM=1`): LLM chọn chunk trả lời đúng trong top-5 → đẩy lên rank 1. hit@1 45.5→**50.0%**, hit@3 63.6→**72.7%**, MRR 0.548→**0.591**. Trần: hit@5 72.7% không đổi — re-rank chỉ đổi thứ tự trong top-5, không thêm mới (giới hạn retrieval thật). Quyết định re-rank (chỉ số chunk, không hallucinate được) cache trong `data/llm_rerank_cache.jsonl` → chạy lại không cần API key.
+
+**RAG answer generation** (`tests/benchmark_answer_gen.py`, grounding check tự động — không phải đo độ đúng ngữ nghĩa): 13/22 câu hỏi trả lời được từ top-3 context, **12/13** câu trả lời có mọi số nằm trong context (chống hallucinate), 7/13 có từ khóa chính của bài GT. 9 câu còn lại LLM từ chối đúng ("không tìm thấy") — top-3 không chứa context (khớp với hit@3 72.7%).
 
 **Kiểm tra overfit (held-out 15/7, seed=42):** α=0.2 đang deploy đạt held-out hit@3 **71.4%**, MRR 0.588 — TỐT HƠN α=0.8 mà sweep trên 15 câu tune chọn (hit@3 42.9%, MRR 0.527) → xác nhận α=0.2 không phải do tune trên eval set, giá trị chọn ổn định ngoài mẫu (`python tests/tune_tiki_alpha.py`). Lưu ý: 7 câu held-out là mẫu nhỏ, nên dùng như kiểm tra chiều hướng, không phải con số chính.
 
 ```bash
 python tests/benchmark_tiki_natural.py   # chạy lại (22 câu hỏi tự nhiên, semantic=True)
+BENCH_LLM=1 python tests/benchmark_tiki_natural.py   # + LLM re-rank (cache sẵn, không cần key)
+BENCH_LLM=1 python tests/benchmark_answer_gen.py     # RAG answer generation + grounding check
 python tests/benchmark_tiki_semantic.py  # sweep α để kiểm tra lại tuning
 ```
 
