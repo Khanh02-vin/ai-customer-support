@@ -1,0 +1,22 @@
+========================================================================
+CUSTOMER SUPPORT — TIKI FAQ THẬT + CÂU HỎI TỰ NHIÊN
+========================================================================
+KB: 992 chunks từ 107 articles (content-only)
+
+Queries: 22 câu hỏi tự nhiên (viết tay, paraphrase tiêu đề)
+
+Metric           value
+------------------------
+hit@1            36.4%
+hit@3            54.5%
+hit@5            68.2%
+MRR              0.486
+
+Fails (không tìm thấy bài đúng trong top-5): 7/22
+  - Mình đặt nhầm đồ, giờ muốn hủy đơn hàng thì làm sao ạ?
+  - Muốn đổi email nhận thông báo của Tiki thì làm sao?
+  - Hỗ trợ khách hàng qua chat với Tiki ở đâu, thao tác như thế nào?
+  - Tiki hoàn tiền lại cho mình sau bao lâu vậy?
+  - Tiki đang chấp nhận những hình thức thanh toán nào?
+  - Khi giao hàng mình có được mở ra kiểm tra sản phẩm trước khi nhận không?
+  - Tiki Xu của mình có chuyển được cho người khác không?

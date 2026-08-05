@@ -1,0 +1,36 @@
+========================================================================
+CUSTOMER SUPPORT RETRIEVAL BENCHMARK — TIKI FAQ THẬT (hotro.tiki.vn)
+========================================================================
+
+107 bài viết thật từ Tiki Help Center
+
+KB: 992 chunks từ 107 articles (content-only)
+
+Queries: 107 câu hỏi (tiêu đề bài viết Tiki)
+
+Metric           value
+------------------------
+hit@1            46.7%
+hit@3            65.4%
+hit@5            76.6%
+MRR              0.569
+
+Fails (query không tìm thấy article của mình trong top-5): 25/107
+  - Làm thế nào đăng ký tài khoản tại Tiki?
+  - Tại sao tôi không đăng nhập được?
+  - Làm cách nào để tôi hủy đơn hàng?
+  - Hướng dẫn thao tác chat với Tiki
+  - Quy định về việc đặt các sản phẩm rượu tại Tiki
+  - [Cảnh báo lừa đảo] Tin nhắn mạo danh thông tin tuyển dụng của Tiki
+  - [Cảnh báo lừa đảo] Những điều lưu ý nên làm để tránh nhận phải đơn hàng ảo/giả m
+  - Một số câu hỏi thường gặp về thẻ cào
+  - Mua mã thẻ với nhiều ưu đãi và thanh toán nhanh chóng tại Tiki
+  - Làm thế nào để tôi đặt nhiều sản phẩm vào cùng 1 đơn hàng
+  - Làm cách nào để tôi đặt hàng qua ứng dụng Tiki
+  - Làm thế nào để tôi thanh toán lại
+  - Tiki hiện đang hỗ trợ các phương thức thanh toán nào
+  - Tiki Xu là gì? Giá trị quy đổi như thế nào?
+  - Dịch vụ TikiFAST - Giao tiết kiệm
+
+Method: token-overlap coverage (stdlib, không vector DB)
+KB không index title — retriever phải khớp query→content thật
