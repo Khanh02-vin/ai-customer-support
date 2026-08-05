@@ -38,3 +38,4 @@ data/kb_emb_cache.pkl
 # Wikipedia bài viết chọn lọc — nội dung CC-BY-SA, KHÔNG commit (tải lại bằng tests/benchmark_wiki.py)
 data/wiki_cache/
 data/_wiki_preview.json
+tests/wiki_err.log
