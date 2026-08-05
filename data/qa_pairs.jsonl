@@ -1,0 +1,31 @@
+{"query":"Sản phẩm mua về được bảo hành bao lâu?","answer_id":"bh_1"}
+{"query":"Bảo hành miễn phí cho trường hợp nào?","answer_id":"bh_1"}
+{"query":"Những trường hợp không được bảo hành là gì?","answer_id":"bh_2"}
+{"query":"Làm sao để yêu cầu sửa chữa bảo hành?","answer_id":"bh_3"}
+{"query":"Đơn hàng dưới 500k có free ship không?","answer_id":"gh_1"}
+{"query":"Mua đồ ở Hà Nội mất mấy ngày để giao?","answer_id":"gh_1"}
+{"query":"Tôi muốn theo dõi đơn đặt hàng đang đi thế nào?","answer_id":"gh_2"}
+{"query":"Giao hàng nhanh trong 2 giờ thì tính phí bao nhiêu?","answer_id":"gh_3"}
+{"query":"Phải đổi trả ra sao khi hàng lỗi nhà sản xuất?","answer_id":"dt_1"}
+{"query":"Hàng sai so với website thì được hoàn tiền như thế nào?","answer_id":"dt_2"}
+{"query":"Có thể thanh toán bằng những cách nào trên shop này?","answer_id":"tt_1"}
+{"query":"Mua COD thì phải nộp thêm phí nữa phải không?","answer_id":"tt_2"}
+{"query":"Có mã giảm giá cho khách VIP không?","answer_id":"tt_3"}
+{"query":"Quên mật khẩu đăng nhập phải làm sao?","answer_id":"tk_1"}
+{"query":"Muốn xóa tài khoản thì gửi mail vào đâu?","answer_id":"tk_2"}
+{"query":"Thành viên Plus được bảo hành lâu hơn không?","answer_id":"bh_4"}
+{"query":"Giao hàng đến vùng núi hay hải đảo tốn bao lâu?","answer_id":"gh_4"}
+{"query":"Chậm giao hàng quá vài ngày thì có đền bù không?","answer_id":"gh_5"}
+{"query":"Kiểm tra hàng chính hãng bằng cách nào?","answer_id":"bh_5"}
+{"query":"Đang phân vân không thích món hàng thì có thể trả lại được không?","answer_id":"dt_3"}
+{"query":"Doanh nghiệp muốn đặt số lượng lớn thanh toán thế nào?","answer_id":"tt_4"}
+{"query":"Gửi hàng bị thất lạc hoặc nhầm địa chỉ thì liên hệ hotline nào gấp?","answer_id":"tk_3"}
+{"query":"Tủ lạnh hỏng có thợ đến sửa tại nhà không hay phải mang đi?","answer_id":"bh_6"}
+{"query":"Hạn mức tối đa của một lần giao dịch COD là bao nhiêu?","answer_id":"tt_2"}
+{"query":"Miễn phí vận chuyển cho khu vực tỉnh khác bao nhiêu một đơn?","answer_id":"gh_1"}
+{"query":"Nhanh nhất thì bao lâu tôi nhận được đơn hàng?","answer_id":"gh_1"}
+{"query":"Khiếu nại chậm giao hàng cần đợi ít nhất mấy ngày làm việc?","answer_id":"gh_5"}
+{"query":"Thành viên Plus đóng phí mỗi năm là bao nhiêu?","answer_id":"bh_4"}
+{"query":"Nếu mua tivi mà hỏng thì có được bảo hành tại chỗ không?","answer_id":"bh_6"}
+{"query":"Hóa đơn bán lẻ có thể thanh toán qua ví MoMo ZaloPay được không?","answer_id":"tt_1"}
+{"query":"Tôi đã gửi hàng trả về nhưng chưa thấy tiền vào tài khoản bao lâu nữa?","answer_id":"dt_2"}
