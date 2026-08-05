@@ -1,3 +1,4 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
 ========================================================================
 CUSTOMER SUPPORT RETRIEVAL BENCHMARK — TIKI FAQ THẬT (hotro.tiki.vn)
 ========================================================================
@@ -8,14 +9,16 @@ KB: 992 chunks từ 107 articles (content-only)
 
 Queries: 107 câu hỏi (tiêu đề bài viết Tiki)
 
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 3919.86it/s]
 Metric           value
 ------------------------
-hit@1            46.7%
-hit@3            65.4%
-hit@5            76.6%
-MRR              0.569
+hit@1            49.5%
+hit@3            68.2%
+hit@5            75.7%
+MRR              0.591
 
-Fails (query không tìm thấy article của mình trong top-5): 25/107
+Fails (query không tìm thấy article của mình trong top-5): 26/107
+  - Tại sao tôi nên đăng ký tài khoản tại Tiki?
   - Làm thế nào đăng ký tài khoản tại Tiki?
   - Tại sao tôi không đăng nhập được?
   - Làm cách nào để tôi hủy đơn hàng?
@@ -30,7 +33,7 @@ Fails (query không tìm thấy article của mình trong top-5): 25/107
   - Làm thế nào để tôi thanh toán lại
   - Tiki hiện đang hỗ trợ các phương thức thanh toán nào
   - Tiki Xu là gì? Giá trị quy đổi như thế nào?
-  - Dịch vụ TikiFAST - Giao tiết kiệm
 
 Method: token-overlap coverage (stdlib, không vector DB)
 KB không index title — retriever phải khớp query→content thật
+EXIT=0

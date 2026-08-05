@@ -73,7 +73,7 @@ def main():
     fails = []
 
     for title, _ in queries:
-        result = retrieve(title, entries, k=max(ks))
+        result = retrieve(title, entries, k=max(ks), semantic=True)
         gt = art_chunk_ids[title]
         for k in ks:
             if set(r.id for r in result[:k]) & gt:

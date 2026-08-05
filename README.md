@@ -91,28 +91,29 @@ python -m pytest tests/ -q
 
 Data scrape qua browser automation từ Tiki Help Center. KB = chunk nội dung không index title → retriever phải khớp query→content tự nhiên. Query = tiêu đề bài (câu hỏi thật của khách VN):
 
-| Metric | Token-overlap (baseline) | TF-IDF cosine | **TF-IDF + stopwords** |
+| Metric | Token-overlap (baseline) | TF-IDF + stopwords | **Hybrid + e5-small** |
 |---|---|---|---|
-| hit@1 | 37.4% | 40.2% | **46.7%** |
-| hit@3 | 55.1% | 61.7% | **65.4%** |
-| hit@5 | 67.3% | 67.3% | **76.6%** |
-| MRR | 0.478 | 0.505 | **0.569** |
+| hit@1 | 37.4% | 46.7% | **49.5%** |
+| hit@3 | 55.1% | 65.4% | **68.2%** |
+| hit@5 | 67.3% | 76.6% | **75.7%** |
+| MRR | 0.478 | 0.569 | **0.591** |
 
-TF-IDF khắc phục từ thường (tiki, tôi, làm, tại) lấn át token hiếm (bảo hành, đổi trả). Lần 2: thêm VN stopwords + lọc char-bigram chứa space/punct (noise như `"h "`, `"y?"`) — quan trọng với câu hỏi tự nhiên (xem mục 2).
+TF-IDF khắc phục từ thường (tiki, tôi, làm, tại) lấn át token hiếm (bảo hành, đổi trả). Lần 2: thêm VN stopwords + lọc char-bigram chứa space/punct (noise như `"h "`, `"y?"`) — quan trọng với câu hỏi tự nhiên (xem mục 2). Lần 3: hybrid TF-IDF + `intfloat/multilingual-e5-small` (α=0.2, sweep trên 22 câu tự nhiên; semantic layer tùy chọn `retrieve(semantic=True)`, fallback TF-IDF nếu chưa cài sentence-transformers).
 
 ### 1b. Câu hỏi tự nhiên — 22 câu paraphrase kiểu người dùng thật
 
 `data/tiki_queries_natural.jsonl`: 22 câu hỏi viết tay kiểu khách hàng thật (không dùng tiêu đề), GT = bài gốc theo URL. Đóng lỗ hổng benchmark cũ "query = tiêu đề quá dễ":
 
-| Metric | Kết quả |
-|---|---|
-| hit@1 | **36.4%** |
-| hit@3 | **54.5%** |
-| hit@5 | **68.2%** |
-| MRR | **0.486** |
+| Metric | TF-IDF thuần | **Hybrid + e5-small** |
+|---|---|---|
+| hit@1 | 36.4% | **45.5%** |
+| hit@3 | 54.5% | **63.6%** |
+| hit@5 | 68.2% | **72.7%** |
+| MRR | 0.486 | **0.548** |
 
 ```bash
-python tests/benchmark_tiki_natural.py   # chạy lại (22 câu hỏi tự nhiên)
+python tests/benchmark_tiki_natural.py   # chạy lại (22 câu hỏi tự nhiên, semantic=True)
+python tests/benchmark_tiki_semantic.py  # sweep α để kiểm tra lại tuning
 ```
 
 ### 2. Controlled Enterprise FAQ — 21 bài chính sách TMĐT tự tổng hợp, 31 QA paraphrase

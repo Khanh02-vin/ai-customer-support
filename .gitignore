@@ -31,3 +31,6 @@ Thumbs.db
 .idea/
 .vscode/
 .codex/
+
+# Benchmark artifacts (regenerable)
+data/kb_emb_cache.pkl
