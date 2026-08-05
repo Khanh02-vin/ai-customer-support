@@ -1,0 +1,17 @@
+============================================================
+RETRIEVAL — BÀI VIẾT CHỌN LỌC WIKIPEDIA TIẾNG VIỆT (CC-BY-SA)
+Bài tải: 120/120 (>= 2000 chars)
+Chunks: 25398, bài có KB: 120
+Queries: 30 (tự viết, GT = bài chứa đáp án)
+
+Metric           value
+------------------------
+hit@1            90.0%
+hit@3            96.7%
+hit@5            96.7%
+MRR              0.933
+
+Fails (query không tìm thấy bài trong top-5): 1/30
+  - Nghệ sĩ người Anh được coi là biểu tượng toàn cầu qua bộ ria và cây gậy chống là
+
+Time: 374s (cache nếu đã tải)

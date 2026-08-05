@@ -1,4 +1,5 @@
-fa3225a39301101b2399d03124fc5dd5e342ae985ebcfa8f14b4306126ebd4db *data/tiki_faq_raw.json
-38d945aafe4c823a5886e341a187896fa2934437b7405717e993974f26401d5c *data/tiki_queries_natural.jsonl
+# Lưu ý: data/tiki_faq_raw.json và data/tiki_queries_natural.jsonl đã bị GỠ khỏi repo
+# vì lý do pháp lý (nội dung scrape từ Tiki Help Center — tái phân phối nội dung
+# có bản quyền). Số liệu benchmark Tiki trong README là lịch sử, không tái hiện được.
 051b6a5176b6bc86cffffd0052b43855675b811039f7778d6fb83f0029206f23 *data/qa_pairs.jsonl
 895bd2765c362c40b115d01759e0ebbbab758921e0219cd4024ea665e33fbd66 *kb/enterprise_faq.jsonl

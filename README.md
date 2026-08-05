@@ -89,6 +89,8 @@ python -m pytest tests/ -q
 
 ### 1. Tiki Help Center (hotro.tiki.vn) — 107 bài viết thật
 
+> ⚠️ **Dữ liệu đã gỡ vì lý do pháp lý.** `data/tiki_faq_raw.json` + `data/tiki_queries_natural.jsonl` (nội dung scrape từ Tiki Help Center) đã bị xóa khỏi git history 08/2026 — tái phân phối nội dung có bản quyền của Tiki. Số liệu dưới đây là **lịch sử, không tái hiện được**; script `benchmark_tiki*.py` giữ lại làm tài liệu phương pháp. Thay thế cho dữ liệu thật không-phạm: mục 3 (Wikipedia).
+
 Data scrape qua browser automation từ Tiki Help Center. KB = chunk nội dung không index title → retriever phải khớp query→content tự nhiên. Query = tiêu đề bài (câu hỏi thật của khách VN):
 
 | Metric | Token-overlap (baseline) | TF-IDF + stopwords | **Hybrid + e5-small** |
@@ -147,7 +149,26 @@ python tests/benchmark_retrieval.py             # chạy lại benchmark
 pytest tests/test_retrieval_regression.py       # regression
 ```
 
-Data: `data/tiki_faq_raw.json` (KB thật từ hotro.tiki.vn), `kb/enterprise_faq.jsonl` (KB kiểm soát), `data/qa_pairs.jsonl` (QA pairs). Không sửa test data cũ.
+Data: `data/tiki_faq_raw.json` (KB thật từ hotro.tiki.vn — **đã gỡ, xem note mục 1**), `kb/enterprise_faq.jsonl` (KB kiểm soát), `data/qa_pairs.jsonl` (QA pairs). Không sửa test data cũ.
+
+### 3. Bài viết chọn lọc Wikipedia tiếng Việt — 120 bài, 25 câu hỏi tự nhiên
+
+Data: **Thể loại:Bài viết chọn lọc** trên vi.wikipedia.org (120 bài, license **CC-BY-SA** — nội dung thuộc Wikipedia, **tải lúc chạy** qua API + cache `data/wiki_cache/` gitignored, KHÔNG commit nội dung bài; chỉ commit câu hỏi tự viết + số liệu). KB = chunk nội dung không index title, giống setup Tiki. Test generalization của retriever ra ngoài FAQ công ty — corpus đa chủ đề (lịch sử, văn hóa, khoa học, game...):
+
+| Metric | TF-IDF thuần (không semantic) |
+|---|---|
+| hit@1 | **90.0%** |
+| hit@3 | **96.7%** |
+| hit@5 | **96.7%** |
+| MRR | **0.933** |
+
+30 câu hỏi: 25 câu chứa entity đặc trưng (Saturn V, HCl, Clamp, PopCap...) + **5 câu paraphrase khó không nhắc tên riêng** ("chất lỏng ăn mòn mà dạ dày tiết ra là gì?"). 27/30 tìm đúng bài ở rank 1. **Fail duy nhất (ghi thẳng):** câu paraphrase "nghệ sĩ qua bộ ria và cây gậy chống" — toàn từ chung, TF-IDF không phân biệt được bài Charlie Chaplin giữa 25k chunks (bài dài 80k chars, bộ ria chỉ xuất hiện 1-2 lần). Giới hạn: TF-IDF thuần, chưa bật semantic layer (không thêm dep); kết quả cao hơn Tiki vì corpus là bài dài một-chủ-đề (mỗi chunk chứa nhiều token chủ đề), còn FAQ Tiki là các bài ngắn trùng chủ đề nhau.
+
+```bash
+python tests/benchmark_wiki.py   # chạy lại (tự tải bài qua API nếu cache thiếu)
+```
+
+Data: `data/wiki_queries.jsonl` (25 câu hỏi tự viết, GT = bài chứa đáp án theo title).
 
 ## API tóm tắt
 
