@@ -23,7 +23,9 @@ class SupportRepo(SQLiteRepo):
                 channel TEXT,
                 created_at TEXT,
                 updated_at TEXT,
-                resolved_at TEXT
+                resolved_at TEXT,
+                feedback_rating INTEGER DEFAULT NULL,
+                feedback_text TEXT DEFAULT NULL
             )
         """)
         conn.execute("""
@@ -118,6 +120,20 @@ class SupportRepo(SQLiteRepo):
                 "UPDATE tickets SET status = ?, updated_at = ?, resolved_at = COALESCE(?, resolved_at) WHERE id = ?",
                 (status, datetime.now().isoformat(), resolved_at, ticket_id),
             )
+
+    def add_feedback(self, ticket_id: str, rating: int, text: str = "") -> None:
+        with self._connect() as conn:
+            conn.execute(
+                "UPDATE tickets SET feedback_rating = ?, feedback_text = ?, updated_at = ? WHERE id = ?",
+                (rating, text, datetime.now().isoformat(), ticket_id),
+            )
+
+    def feedback_stats(self) -> dict:
+        with self._connect() as conn:
+            rows = conn.execute(
+                "SELECT feedback_rating, COUNT(*) c FROM tickets WHERE feedback_rating IS NOT NULL GROUP BY feedback_rating"
+            ).fetchall()
+        return {int(r["feedback_rating"]): r["c"] for r in rows}
 
     def stats(self) -> dict:
         with self._connect() as conn:

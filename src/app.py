@@ -175,6 +175,18 @@ async def human_reply(ticket_id: str, body: dict, user: User = Depends(current_u
         repo.set_status(ticket_id, "open")
     return {"ok": True}
 
+@app.post("/tickets/{ticket_id}/feedback")
+async def submit_feedback(ticket_id: str, body: dict, user: User = Depends(current_user)):
+    """Ghi nhận feedback → hệ thống học từ đánh giá."""
+    rating = body.get("rating")
+    text = (body or {}).get("text", "").strip()
+    if rating is None or not (1 <= rating <= 5):
+        raise HTTPException(status_code=400, detail="rating 1-5 bắt buộc")
+    if not repo.get_ticket(ticket_id):
+        raise HTTPException(status_code=404, detail="Không tìm thấy ticket")
+    repo.add_feedback(ticket_id, rating, text)
+    return {"ok": True, "rating": rating}
+
 
 @app.patch("/tickets/{ticket_id}")
 async def set_ticket_status(ticket_id: str, body: dict, user: User = Depends(current_user)):
@@ -189,7 +201,9 @@ async def set_ticket_status(ticket_id: str, body: dict, user: User = Depends(cur
 
 @app.get("/stats")
 async def stats(user: User = Depends(current_user)):
-    return repo.stats()
+    s = repo.stats()
+    s["feedback"] = repo.feedback_stats()
+    return s
 
 
 # ---------- Cấu hình widget (admin) ----------
