@@ -83,7 +83,62 @@ python main.py
 python -m pytest tests/ -q
 ```
 
-23 test: retrieval tiếng Việt, agent loop (guard KB, escalate, tool lỗi), API (auth JWT, KB, chat, ticket 404/400).
+27 test: retrieval tiếng Việt, agent loop (guard KB, escalate, tool lỗi), API (auth JWT, KB, chat, ticket 404/400), regression enterprise FAQ.
+
+## Benchmark — Real-world Retrieval on Vietnamese FAQs
+
+### 1. Tiki Help Center (hotro.tiki.vn) — 107 bài viết thật
+
+Data scrape qua browser automation từ Tiki Help Center. KB = chunk nội dung không index title → retriever phải khớp query→content tự nhiên. Query = tiêu đề bài (câu hỏi thật của khách VN):
+
+| Metric | Token-overlap (baseline) | TF-IDF cosine | **TF-IDF + stopwords** |
+|---|---|---|---|
+| hit@1 | 37.4% | 40.2% | **46.7%** |
+| hit@3 | 55.1% | 61.7% | **65.4%** |
+| hit@5 | 67.3% | 67.3% | **76.6%** |
+| MRR | 0.478 | 0.505 | **0.569** |
+
+TF-IDF khắc phục từ thường (tiki, tôi, làm, tại) lấn át token hiếm (bảo hành, đổi trả). Lần 2: thêm VN stopwords + lọc char-bigram chứa space/punct (noise như `"h "`, `"y?"`) — quan trọng với câu hỏi tự nhiên (xem mục 2).
+
+### 1b. Câu hỏi tự nhiên — 22 câu paraphrase kiểu người dùng thật
+
+`data/tiki_queries_natural.jsonl`: 22 câu hỏi viết tay kiểu khách hàng thật (không dùng tiêu đề), GT = bài gốc theo URL. Đóng lỗ hổng benchmark cũ "query = tiêu đề quá dễ":
+
+| Metric | Kết quả |
+|---|---|
+| hit@1 | **36.4%** |
+| hit@3 | **54.5%** |
+| hit@5 | **68.2%** |
+| MRR | **0.486** |
+
+```bash
+python tests/benchmark_tiki_natural.py   # chạy lại (22 câu hỏi tự nhiên)
+```
+
+### 2. Controlled Enterprise FAQ — 21 bài chính sách TMĐT tự tổng hợp, 31 QA paraphrase
+
+Định lượng mức baseline trên dataset kiểm soát, từ vựng query-content trùng khớp cao hơn thực tế:
+
+| Metric | Kết quả |
+|---|---|
+| hit@1 | 64.5% |
+| hit@3 | 90.3% |
+| hit@5 | 93.5% |
+| MRR | 0.772 |
+
+```bash
+# Tiki FAQ thật (107 queries)
+python tests/benchmark_tiki.py                  # chạy lại benchmark
+pytest tests/test_retrieval_regression.py       # regression: 8 câu hỏi tìm đúng article top-5
+```
+
+```bash
+# Enterprise FAQ (31 queries, dataset kiểm soát)
+python tests/benchmark_retrieval.py             # chạy lại benchmark
+pytest tests/test_retrieval_regression.py       # regression
+```
+
+Data: `data/tiki_faq_raw.json` (KB thật từ hotro.tiki.vn), `kb/enterprise_faq.jsonl` (KB kiểm soát), `data/qa_pairs.jsonl` (QA pairs). Không sửa test data cũ.
 
 ## API tóm tắt
 
