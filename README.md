@@ -157,12 +157,14 @@ Data: **Thể loại:Bài viết chọn lọc** trên vi.wikipedia.org (120 bài
 
 | Metric | TF-IDF thuần (không semantic) |
 |---|---|
-| hit@1 | **90.0%** |
-| hit@3 | **96.7%** |
-| hit@5 | **96.7%** |
-| MRR | **0.933** |
+| hit@1 | **93.3%** |
+| hit@3 | **97.8%** |
+| hit@5 | **97.8%** |
+| MRR | **0.956** |
 
-30 câu hỏi: 25 câu chứa entity đặc trưng (Saturn V, HCl, Clamp, PopCap...) + **5 câu paraphrase khó không nhắc tên riêng** ("chất lỏng ăn mòn mà dạ dày tiết ra là gì?"). 27/30 tìm đúng bài ở rank 1. **Fail duy nhất (ghi thẳng):** câu paraphrase "nghệ sĩ qua bộ ria và cây gậy chống" — toàn từ chung, TF-IDF không phân biệt được bài Charlie Chaplin giữa 25k chunks (bài dài 80k chars, bộ ria chỉ xuất hiện 1-2 lần). Giới hạn: TF-IDF thuần, chưa bật semantic layer (không thêm dep); kết quả cao hơn Tiki vì corpus là bài dài một-chủ-đề (mỗi chunk chứa nhiều token chủ đề), còn FAQ Tiki là các bài ngắn trùng chủ đề nhau.
+45 câu theo 3 mức khó (đo riêng từng nhóm — số thật, không suy đoán): **24 câu entity-rich** (chứa tên riêng hiếm: Saturn V, HCl, Clamp, PopCap) → hit@1 **100%**; **15 câu paraphrase không nhắc title nhưng chứa từ đặc trưng nội dung** (chaebol, Los Alamos, Manhattan, cân bằng thuỷ tĩnh) → hit@1 **100%**; **6 câu paraphrase thuần từ chung** (mức khó thật) → hit@1 **50%** (3/6). Fail duy nhất toàn benchmark thuộc nhóm cuối: "nghệ sĩ qua bộ ria và cây gậy chống" (Charlie Chaplin) — toàn từ chung, không từ đặc trưng để TF-IDF bám vào giữa 25k chunks (bài 80k chars, "bộ ria" chỉ xuất hiện 1-2 lần).
+
+**Phát hiện trung thực:** retriever đạt 100% khi câu hỏi có bất kỳ từ đặc trưng nào; **tụt còn 50% khi paraphrase thuần không từ đặc trưng** — đây chính là nơi cần semantic layer (chưa bật, không thêm dep) hoặc LLM re-rank. Giới hạn khác: corpus là bài dài một-chủ-đề (mỗi chunk chứa nhiều token chủ đề) nên số cao hơn FAQ Tiki (bài ngắn trùng chủ đề) — không so sánh ngang được.
 
 ```bash
 python tests/benchmark_wiki.py   # chạy lại (tự tải bài qua API nếu cache thiếu)
