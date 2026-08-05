@@ -1,13 +1,21 @@
 """Knowledge base: chunk tài liệu + truy vấn (stdlib, không cần vector DB).
 Vietnamese không có word segmenter → tokenize = từ + char-bigram.
 Scoring: TF-IDF cosine (IDF tính từ corpus) — khắc phục từ thường (tiki, làm, tại)
-lấn át từ khóa hiếm khi chỉ dùng độ phủ token."""
+lấn át từ khóa hiếm khi chỉ dùng độ phủ token.
+semantic=True (tùy chọn): hybrid TF-IDF + multilingual-e5-small — fallback TF-IDF
+nếu chưa cài sentence-transformers. α (KB_SEMANTIC_ALPHA, mặc định 0.2) sweep trên
+22 câu hỏi tự nhiên Tiki thật (0.0→1.0): tốt nhất α=0.2, hit@3 54.5%→63.6%."""
 import math
+import os
 import re
 from collections import Counter
 from typing import List
 
 from ..domain.models import KBEntry
+
+_ALPHA = float(os.environ.get("KB_SEMANTIC_ALPHA", "0.2"))
+_sem_model = None
+_sem_cache = (None, None)  # (id(entries), embeddings)
 
 _VIET = r"a-zA-Z0-9_àáảãạăắằẳẵặâấầẩẫậèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵđ"
 _WORD = re.compile(rf"[{_VIET}]+")
@@ -51,8 +59,31 @@ def _tokens(s: str) -> set:
     return words | bigrams
 
 
-def retrieve(query: str, entries: List[KBEntry], k: int = 3) -> List[KBEntry]:
-    """Top-k đoạn liên quan nhất theo TF-IDF cosine similarity (query boolean-TF)."""
+def _sem_embeddings(entries: List[KBEntry]):
+    """Embed toàn bộ chunk bằng e5-small (cache theo id(entries))."""
+    global _sem_model, _sem_cache
+    if _sem_cache[0] == id(entries):
+        return _sem_cache[1]
+    if _sem_model is None:
+        from sentence_transformers import SentenceTransformer
+        _sem_model = SentenceTransformer("intfloat/multilingual-e5-small")
+    emb = _sem_model.encode(["passage: " + e.content for e in entries], batch_size=8)
+    _sem_cache = (id(entries), emb)
+    return emb
+
+
+def _cosine(a, b) -> float:
+    if not a or len(a) != len(b):
+        return 0.0
+    dot = sum(x * y for x, y in zip(a, b))
+    na = math.sqrt(sum(x * x for x in a))
+    nb = math.sqrt(sum(x * x for x in b))
+    return dot / (na * nb) if na and nb else 0.0
+
+
+def retrieve(query: str, entries: List[KBEntry], k: int = 3, semantic: bool = False) -> List[KBEntry]:
+    """Top-k đoạn liên quan nhất. semantic=False: TF-IDF cosine thuần (stdlib).
+    semantic=True: hybrid (1-α)*TF-IDF + α*semantic — cần sentence-transformers."""
     q = _tokens(query)
     if not q:
         return []
@@ -70,14 +101,32 @@ def retrieve(query: str, entries: List[KBEntry], k: int = 3) -> List[KBEntry]:
     if q_norm == 0:
         return []
 
+    d_norm = [math.sqrt(sum(idf.get(t, 0.0) ** 2 for t in toks)) for toks in entry_tokens]
+
+    sem_emb = None
+    if semantic:
+        try:
+            sem_emb = _sem_embeddings(entries)
+        except Exception:
+            sem_emb = None
+
+    q_sem = None
+    if sem_emb is not None:
+        from sentence_transformers import SentenceTransformer
+        q_sem = list(_sem_model.encode(["query: " + query], batch_size=8)[0])
+
     scored = []
-    for e, toks in zip(entries, entry_tokens):
+    for i, (e, toks, dn) in enumerate(zip(entries, entry_tokens, d_norm)):
         overlap = q & toks
-        if not overlap:
-            continue
-        dot = sum(idf.get(t, 0.0) ** 2 for t in overlap)
-        d_norm = math.sqrt(sum(idf.get(t, 0.0) ** 2 for t in toks))
-        score = dot / (q_norm * d_norm)
+        lex = 0.0
+        if overlap:
+            dot = sum(idf.get(t, 0.0) ** 2 for t in overlap)
+            if dn > 0:
+                lex = dot / (q_norm * dn)
+        if sem_emb is not None:
+            score = (1 - _ALPHA) * lex + _ALPHA * _cosine(q_sem, sem_emb[i])
+        else:
+            score = lex
         if score > 0:
             scored.append((score, e))
     scored.sort(key=lambda x: x[0], reverse=True)
